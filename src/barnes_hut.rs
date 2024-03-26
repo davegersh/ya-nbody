@@ -137,8 +137,14 @@ impl BarnesHut {
         for body in bodies.iter() {
             self.tree_root.insert(body.position, body.mass);
         }
+
+        let body_count = bodies.len();
         
-        let chunk_size: usize = bodies.len() / self.thread_count as usize;
+        let mut chunk_size: usize = body_count / self.thread_count as usize;
+
+        if chunk_size == 0 {
+            chunk_size = 1;
+        }
 
         thread::scope(|s| {
             for chunk in bodies.chunks_mut(chunk_size) {

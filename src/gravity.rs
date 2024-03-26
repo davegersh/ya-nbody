@@ -13,7 +13,7 @@ pub fn calculate_gravity(pos1: Vec2, mass1: f32, pos2: Vec2, mass2: f32) -> Vec2
         return Vec2::ZERO;
     }
 
-    G * mass1 * mass2 / r_len.powi(3) * r
+    G * mass1 * mass2 / (r_len * r_len) * r.normalize()
 }
 
 pub fn calculate_body_gravity(b1: &Body, b2: &Body) -> Vec2 {
