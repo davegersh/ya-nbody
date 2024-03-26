@@ -1,6 +1,6 @@
-use egui_macroquad::{draw, egui::{Color32, Ui, Window}};
+use egui_macroquad::egui::{Color32, Ui, Window};
 
-use crate::body::Body;
+use crate::physics::body::Body;
 
 pub fn draw_ui_window<F>(mut f: F) where F: FnMut(&mut Ui) {
     egui_macroquad::ui(|egui_ctx| {

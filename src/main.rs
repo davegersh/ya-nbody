@@ -2,9 +2,9 @@
 use macroquad::prelude::{get_frame_time, next_frame, screen_height, screen_width};
 use glam::Vec2;
 
-use ya_nbody::body_spawn;
-use ya_nbody::barnes_hut::BarnesHut;
-use ya_nbody::integrators::{Integrator, Verlet};
+use ya_nbody::physics::body_spawn;
+use ya_nbody::algorithms::barnes_hut::BarnesHut;
+use ya_nbody::physics::integrators::{Integrator, Verlet};
 use ya_nbody::render;
 use ya_nbody::ui::*;
 

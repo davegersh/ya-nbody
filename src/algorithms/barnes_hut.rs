@@ -1,5 +1,6 @@
-use super::body::Body;
-use super::gravity::calculate_gravity;
+use crate::physics::body::Body;
+use crate::physics::gravity::calculate_gravity;
+
 use glam::Vec2;
 use crossbeam::thread;
 

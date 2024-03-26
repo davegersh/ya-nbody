@@ -1,5 +1,5 @@
-use super::body::Body;
-use crate::barnes_hut::BHTreeNode;
+use crate::physics::body::Body;
+use super::algorithms::barnes_hut::BHTreeNode;
 
 use glam::Vec2;
 use std::f32::consts::PI;

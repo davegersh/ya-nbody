@@ -1,10 +1,10 @@
-use crate::gravity::G;
+use super::gravity::G;
 use std::f32::consts::PI;
 
 use glam::Vec2;
 use rand::Rng;
 
-use crate::body::Body;
+use super::body::Body;
 
 pub fn create_galaxy(count: i32, center: Vec2, center_mass: f32, min_distance: f32, max_distance: f32) -> Vec<Body> {
     let mut bodies = vec![];
