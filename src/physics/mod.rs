@@ -1,5 +1,5 @@
 pub mod body;
-pub mod body_spawn;
+pub mod galaxy;
 
 pub mod gravity;
 pub mod integrators;

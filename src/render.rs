@@ -7,11 +7,11 @@ use macroquad::prelude::{draw_circle, draw_rectangle_lines, draw_line, draw_tria
 
 
 pub fn draw_bodies(bodies: &Vec<Body>) {
-    for body in bodies.iter() {
+    for (_, body) in bodies.iter().enumerate() {
         let speed = body.velocity.length() / 5.0 + 0.5;
-        let color = Color::new(speed, speed, speed, 0.3);
-        let mass = body.mass.clamp(0.5, 10.0);
-        draw_circle(body.position.x, body.position.y, mass, color);
+        let color = Color::new(speed, speed, speed, 0.1);
+        let radius = body.mass.clamp(0.5, 10.0);
+        draw_circle(body.position.x, body.position.y, radius, color);
     }
 }
 

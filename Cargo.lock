@@ -1183,6 +1183,7 @@ dependencies = [
  "glam 0.25.0",
  "macroquad",
  "rand",
+ "rand_chacha",
 ]
 
 [[package]]
