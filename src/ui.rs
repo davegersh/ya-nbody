@@ -18,10 +18,9 @@ pub fn draw_bodies_section(ui: &mut Ui, bodies: &mut Vec<Body>) {
     }
 }
 
-pub fn draw_sim_section(ui: &mut Ui, dt: f32, paused: &mut bool, steps: &mut u32) {
+pub fn draw_sim_section(ui: &mut Ui, dt: f32, paused: &mut bool) {
     ui.colored_label(Color32::WHITE, format!("FPS: {:.1}", 1.0 / dt));
     ui.toggle_value(paused, "Paused");
-    ui.add(egui_macroquad::egui::Slider::new(steps, 1..=100));
 }
 
 pub fn draw_bh_visualize_toggle(ui: &mut Ui, draw_bh: &mut bool) {

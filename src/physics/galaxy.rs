@@ -11,18 +11,19 @@ pub struct Galaxy {
     num_bodies: u32,
     center: Vec2,
     center_mass: f32,
+    center_velocity: Vec2,
     spawn_range: Range<f32>,
 }
 
 impl Galaxy {
-    pub fn new(num_bodies: u32, center: Vec2, center_mass: f32, spawn_range: Range<f32>) -> Self {
-        Self { num_bodies, center, center_mass, spawn_range }
+    pub fn new(num_bodies: u32, center: Vec2, center_mass: f32, center_velocity: Vec2, spawn_range: Range<f32>) -> Self {
+        Self { num_bodies, center, center_mass, center_velocity, spawn_range }
     }
 
     pub fn get_bodies(&self) -> Vec<Body> {
         let mut bodies = vec![];
 
-        bodies.push(Body::new(self.center_mass, Vec2::ZERO, self.center));
+        bodies.push(Body::new(self.center_mass, self.center, self.center_velocity));
     
         for i in 0..self.num_bodies {
             let mut rng = ChaCha8Rng::seed_from_u64(i as u64);
@@ -37,7 +38,7 @@ impl Galaxy {
     
             let vel_mag = (G * (self.center_mass + mass) / distance).sqrt();
     
-            let body = Body::new(mass, vel_dir * vel_mag, position + self.center);
+            let body = Body::new(mass, position + self.center, vel_dir * vel_mag);
     
             bodies.push(body);
         }
