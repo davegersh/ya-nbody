@@ -2,6 +2,7 @@ use crate::physics::body::Body;
 use super::algorithms::barnes_hut::BHTreeNode;
 
 use glam::Vec2;
+use macroquad::window::{screen_height, screen_width};
 use std::f32::consts::PI;
 use macroquad::input::{self, is_mouse_button_down, mouse_delta_position, mouse_wheel};
 use macroquad::prelude::{draw_circle, draw_rectangle_lines, draw_line, draw_triangle, Color};
@@ -31,6 +32,18 @@ impl ScreenState {
         self.zoom += mouse_wheel().1 * speed;
         self.zoom = self.zoom.clamp(0.1, 100.0);
     }
+
+    pub fn screen_contains_position(&self, position: Vec2) -> bool {
+        if position.x > screen_width() || position.x < 0.0 {
+            return false;
+        }
+
+        if position.y > screen_height() || position.y < 0.0 {
+            return false;
+        }
+    
+        return true;
+    }
 }
 
 
@@ -40,8 +53,10 @@ pub fn draw_bodies(bodies: &Vec<Body>, screen_state: &ScreenState) {
         let radius = body.mass.clamp(0.5, 10.0);
 
         let position = (body.position * screen_state.zoom) + screen_state.screen_center;
-
-        draw_circle(position.x, position.y, radius * screen_state.zoom, color);
+        
+        if screen_state.screen_contains_position(position) {
+            draw_circle(position.x, position.y, radius * screen_state.zoom, color);
+        }
     }
 }
 

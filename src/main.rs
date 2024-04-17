@@ -17,8 +17,8 @@ fn screen_center() -> Vec2 {
 async fn main() -> Result<(), String> {
     let integrator = Verlet::default();
 
-    let galaxy1 = Galaxy::new(15_000, Vec2::ONE * 100.0, 1e4, Vec2::new(0.0, 3.0), 15.0..100.0);
-    let galaxy2 = Galaxy::new(15_000, Vec2::ONE * -100.0, 1e4, Vec2::new(0.0, -3.0), 15.0..100.0);
+    let galaxy1 = Galaxy::new(30_000, Vec2::ONE * 100.0, 7e3, Vec2::new(0.0, 3.0), 15.0..100.0);
+    let galaxy2 = Galaxy::new(30_000, Vec2::ONE * -100.0, 7e3, Vec2::new(0.0, -3.0), 15.0..100.0);
     
     let mut bodies = galaxy1.get_bodies();
     bodies.append(&mut galaxy2.get_bodies());
