@@ -1,5 +1,5 @@
 use crate::physics::body::Body;
-use super::algorithms::barnes_hut::BHTreeNode;
+use super::physics::barnes_hut::BHTreeNode;
 
 use glam::Vec2;
 use macroquad::window::{screen_height, screen_width};
