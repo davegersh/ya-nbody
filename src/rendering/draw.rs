@@ -1,51 +1,12 @@
+use super::screen_state::ScreenState;
+
 use crate::physics::body::Body;
-use super::physics::barnes_hut::BHTreeNode;
+use crate::physics::barnes_hut::BHTreeNode;
+
+use std::f32::consts::PI;
 
 use glam::Vec2;
-use macroquad::window::{screen_height, screen_width};
-use std::f32::consts::PI;
-use macroquad::input::{self, is_mouse_button_down, mouse_delta_position, mouse_wheel};
 use macroquad::prelude::{draw_circle, draw_rectangle_lines, draw_line, draw_triangle, Color};
-
-#[derive(Default)]
-pub struct ScreenState {
-    pub screen_center: Vec2,
-    pub zoom: f32
-}
-
-
-impl ScreenState {
-    pub fn new(screen_center: Vec2, zoom: f32) -> Self {
-        Self { screen_center, zoom }
-    }
-    
-    pub fn handle_panning(&mut self, speed: f32) {
-        let mouse_delta = mouse_delta_position();
-    
-        if is_mouse_button_down(input::MouseButton::Right) {
-            let delta = Vec2::new(mouse_delta.x, mouse_delta.y);
-            self.screen_center += delta * speed;
-        }
-    }
-    
-    pub fn handle_zoom(&mut self, speed: f32) {
-        self.zoom += mouse_wheel().1 * speed;
-        self.zoom = self.zoom.clamp(0.1, 100.0);
-    }
-
-    pub fn screen_contains_position(&self, position: Vec2) -> bool {
-        if position.x > screen_width() || position.x < 0.0 {
-            return false;
-        }
-
-        if position.y > screen_height() || position.y < 0.0 {
-            return false;
-        }
-    
-        return true;
-    }
-}
-
 
 pub fn draw_bodies(bodies: &Vec<Body>, screen_state: &ScreenState) {
     for (_, body) in bodies.iter().enumerate() {        

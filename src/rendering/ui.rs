@@ -4,7 +4,7 @@ use crate::physics::body::Body;
 
 pub fn draw_ui_window<F>(mut f: F) where F: FnMut(&mut Ui) {
     egui_macroquad::ui(|egui_ctx| {
-        Window::new("Info").show(egui_ctx, |ui: &mut Ui| {
+        Window::new("Config").show(egui_ctx, |ui: &mut Ui| {
             f(ui);
         });
     });

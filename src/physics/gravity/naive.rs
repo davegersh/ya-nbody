@@ -1,5 +1,5 @@
 use crate::physics::body::Body;
-use crate::physics::gravity::calculate_body_gravity;
+use super::gravity::calculate_body_gravity;
 
 #[derive(Default)]
 pub struct Naive {}

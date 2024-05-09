@@ -2,7 +2,6 @@ pub mod body;
 pub mod galaxy;
 
 pub mod gravity;
-pub mod integrators;
+pub use gravity::*;
 
-pub mod algorithms;
-pub use algorithms::*;
+pub mod integrators;

@@ -1,22 +1,19 @@
-use macroquad::prelude::{get_frame_time, next_frame, screen_height, screen_width};
+use macroquad::prelude::{get_frame_time, next_frame};
 use glam::Vec2;
 
-use ya_nbody::physics::galaxy::Galaxy;
-use ya_nbody::physics::barnes_hut::BarnesHut;
-use ya_nbody::physics::integrators::{Euler, Integrator, Verlet};
-use ya_nbody::render::{self, ScreenState};
-use ya_nbody::ui::*;
+use ya_nbody::physics::{barnes_hut::BarnesHut, galaxy::Galaxy};
+use ya_nbody::physics::integrators::{Integrator, Euler, Verlet};
 
-fn screen_center() -> Vec2 {
-    Vec2::new(screen_width() as f32 / 2.0, screen_height() as f32 / 2.0)
-}
+use ya_nbody::rendering::draw;
+use ya_nbody::rendering::screen_state::ScreenState;
+use ya_nbody::rendering::ui::*;
 
 #[macroquad::main("Yet Another N-Body Simulation")]
 async fn main() -> Result<(), String> {
     let integrator = Euler::default();
 
-    let galaxy1 = Galaxy::new(50_000, Vec2::ONE * 100.0, 7e3, Vec2::new(0.0, 3.0), 15.0..100.0);
-    let galaxy2 = Galaxy::new(50_000, Vec2::ONE * -100.0, 7e3, Vec2::new(0.0, -3.0), 15.0..100.0);
+    let galaxy1 = Galaxy::new(30_000, Vec2::ONE * 100.0, 7e3, Vec2::new(0.0, 3.0), 15.0..100.0);
+    let galaxy2 = Galaxy::new(30_000, Vec2::ONE * -100.0, 7e3, Vec2::new(0.0, -3.0), 15.0..100.0);
     
     let mut bodies = galaxy1.get_bodies();
     bodies.append(&mut galaxy2.get_bodies());
@@ -24,7 +21,7 @@ async fn main() -> Result<(), String> {
     let mut bh = BarnesHut::new(1.0, Vec2::ZERO, 2000.0, 20);
     let mut draw_bh = false;
 
-    let mut screen_state = ScreenState::new(screen_center(), 1.0);
+    let mut screen_state = ScreenState::new(1.0);
 
     let mut paused = false;
     let dt = 0.05;
@@ -39,10 +36,10 @@ async fn main() -> Result<(), String> {
         }
 
         if draw_bh {
-            render::draw_bh(&bh.tree_root, &screen_state);
+            draw::draw_bh(&bh.tree_root, &screen_state);
         }
 
-        render::draw_bodies(&mut bodies, &screen_state);
+        draw::draw_bodies(&mut bodies, &screen_state);
  
         draw_ui_window(|ui| {
             draw_sim_section(ui, get_frame_time(), &mut paused);

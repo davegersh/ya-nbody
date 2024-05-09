@@ -1,5 +1,5 @@
 use glam::Vec2;
-use super::body::Body;
+use crate::physics::body::Body;
 
 pub const G: f32 = 6.67408;
 

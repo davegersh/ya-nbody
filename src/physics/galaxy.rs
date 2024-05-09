@@ -1,4 +1,4 @@
-use super::gravity::G;
+use super::gravity::gravity::G;
 use std::{f32::consts::PI, ops::Range};
 
 use glam::Vec2;
