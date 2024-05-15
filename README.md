@@ -1,16 +1,19 @@
 # Yet Another N-Body Simulation
 
-An interactive n-body simulation created using Rust and Macroquad.
+![Two colliding galaxies made up of 15,000 particles](/samples/galaxy_collision.gif)
 
-Makes use of a (lightly) multithreaded implenentation of the Barnes-Hut algorithm to effectively simulate tens of thousands of gravitational interactions between particles.
+An interactive n-body simulation created in Rust using Macroquad and egui.
 
-### Screenshots
-A collision of two galaxies, each made up of 50,000 particles:
+Makes use of a (lightly) multithreaded implenentation of the [Barnes-Hut](https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation) algorithm to effectively simulate tens of thousands of gravitational interactions between particles.
 
-![100,000 particles of two galaxies colliding.](/screenshots/galxay%20collision%20100k.png)
+Makes use of TOML files to define initial conditions of the simulation, sample configs can be find in the `/samples` folder.
+the gif above uses the config located at `samples/galaxy_collision.toml`.
 
-<br>
+### Installation
+First, make sure to have rust and cargo installed. If not, instructions can be found [here](https://www.rust-lang.org/tools/install).
 
-The resulting galaxy after the collision:
-
-![100,000 particles of a galaxy.](/screenshots/big%20galaxy%20100k.png)
+Next, simply clone this repo to a desired location, and run the following command:
+```
+cargo run --release [example.toml]
+```
+Replace `[example.toml]` with the path to your own file path as a config for the simulation.

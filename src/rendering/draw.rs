@@ -8,7 +8,9 @@ use macroquad::prelude::{draw_circle, draw_rectangle_lines, Color};
 
 pub fn draw_bodies(bodies: &Vec<Body>, screen_state: &ScreenState) {
     for (_, body) in bodies.iter().enumerate() {        
-        let color = Color::new(1., 1.,1., 0.1);
+        let alpha = 2000.0 / bodies.len() as f32;
+
+        let color = Color::new(1., 1.,1., alpha);
         let radius = (body.mass / 2.0).clamp(0.5, 10.0);
 
         let position = screen_state.transform_position(body.position);

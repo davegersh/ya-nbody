@@ -66,7 +66,7 @@ async fn main() -> Result<(), String> {
 
         egui_macroquad::draw();
 
-        screen_state.handle_panning(-200.0);
+        screen_state.handle_panning(-300.0);
         screen_state.handle_zoom(0.04);
 
         macroquad::prelude::next_frame().await
