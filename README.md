@@ -4,9 +4,9 @@
 
 An interactive n-body simulation created in Rust using Macroquad and egui.
 
-Makes use of a (lightly) multithreaded implenentation of the [Barnes-Hut](https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation) algorithm to effectively simulate tens of thousands of gravitational interactions between particles.
+Makes use of a (lightly) multithreaded implementation of the [Barnes-Hut](https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation) algorithm to effectively simulate tens of thousands of gravitational interactions between particles.
 
-Initial conditions of the simulation are defined using TOML files, sample configs can be found in the [`/samples`](/samples) directory.
+Initial conditions of the simulation are defined using TOML files, sample configs can be found in [`/samples`](/samples).
 The gif above uses the config located [here](samples/galaxy_collision.toml).
 
 ### Building
