@@ -11,7 +11,7 @@ pub struct ScreenState {
 
 impl ScreenState {
     pub fn new(zoom: f32) -> Self {
-        let screen_center = Vec2::new(screen_width() as f32 / 2.0, screen_height() as f32 / 2.0);
+        let screen_center = Vec2::new(screen_width(), screen_height()) / 2.0;
 
         Self { screen_center, zoom }
     }
@@ -26,8 +26,14 @@ impl ScreenState {
     }
     
     pub fn handle_zoom(&mut self, speed: f32) {
-        self.zoom += mouse_wheel().1 * speed;
-        self.zoom = self.zoom.clamp(0.1, 100.0);
+        let prev_zoom = self.zoom;
+        self.zoom += mouse_wheel().1 * speed * self.zoom;
+        self.zoom = self.zoom.clamp(0.01, 100.0);
+
+        let diff = prev_zoom - self.zoom;
+        if diff != 0.0 {
+            self.screen_center += Vec2::ONE * self.zoom;
+        }
     }
 
     pub fn screen_contains_position(&self, position: Vec2) -> bool {

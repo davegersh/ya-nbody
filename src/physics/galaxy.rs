@@ -9,23 +9,23 @@ use rand_chacha::ChaCha8Rng;
 
 pub struct Galaxy {
     num_bodies: u32,
-    center: Vec2,
-    center_mass: f32,
-    center_velocity: Vec2,
     size: f32,
+    center_mass: f32,
+    position: Vec2,
+    velocity: Vec2,
 }
 
 impl Galaxy {
-    pub fn new(num_bodies: u32, center: Vec2, center_mass: f32, center_velocity: Vec2, size: f32) -> Self {
-        Self { num_bodies, center, center_mass, center_velocity, size }
+    pub fn new(num_bodies: u32, size: f32, center_mass: f32, position: Vec2, velocity: Vec2) -> Self {
+        Self { num_bodies, size, position, center_mass, velocity }
     }
 
     pub fn get_bodies(&self) -> Vec<Body> {
         let mut bodies = vec![];
 
-        bodies.push(Body::new(self.center_mass, self.center, self.center_velocity));
+        bodies.push(Body::new(self.center_mass, self.position, self.velocity));
     
-        for i in 0..self.num_bodies {
+        for i in 0..self.num_bodies - 1 {
             let mut rng = ChaCha8Rng::seed_from_u64(i as u64);
             
             let distance = rng.gen_range(15.0..self.size) as f32;
@@ -38,7 +38,7 @@ impl Galaxy {
     
             let vel_mag = (G * (self.center_mass + mass) / distance).sqrt();
     
-            let body = Body::new(mass, position + self.center, vel_dir * vel_mag);
+            let body = Body::new(mass, position + self.position, vel_dir * vel_mag);
     
             bodies.push(body);
         }

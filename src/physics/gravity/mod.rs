@@ -1,9 +1,6 @@
 pub mod barnes_hut;
 pub use barnes_hut::BarnesHut;
 
-pub mod naive;
-pub use naive::Naive;
-
 use super::Body;
 
 use glam::Vec2;
@@ -24,8 +21,4 @@ pub fn calculate_gravity(pos1: Vec2, mass1: f32, pos2: Vec2, mass2: f32) -> Vec2
 
 pub fn calculate_body_gravity(b1: &Body, b2: &Body) -> Vec2 {
     calculate_gravity(b1.position, b1.mass, b2.position, b2.mass)
-}
-
-pub trait GravitySolver {
-    fn apply_gravity(&mut self, bodies: &mut Vec<Body>);
 }

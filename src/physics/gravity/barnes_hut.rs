@@ -1,6 +1,5 @@
 use super::Body;
 use super::calculate_gravity;
-use super::GravitySolver;
 
 use glam::Vec2;
 use crossbeam::thread;
@@ -132,10 +131,8 @@ impl BarnesHut {
             thread_count,
         }
     }
-}
 
-impl GravitySolver for BarnesHut {
-    fn apply_gravity(&mut self, bodies: &mut Vec<Body>) {
+    pub fn apply_gravity(&mut self, bodies: &mut Vec<Body>) {
         self.tree_root.reset();
 
         for body in bodies.iter() {

@@ -1,53 +1,45 @@
-use macroquad::prelude::{get_frame_time, next_frame};
+use std::env;
+
 use glam::Vec2;
 
-use ya_nbody::physics::{
-    BarnesHut, Naive, Galaxy, GravitySolver,
-    integrators::{Integrator, Euler, Verlet}
+use ya_nbody::{
+    config::Config, 
+    physics::{integrators::{Integrator, Verlet}, BarnesHut,},
+    rendering::{draw, ScreenState, ui::*}
 };
-
-use ya_nbody::rendering::draw;
-use ya_nbody::rendering::ScreenState;
-use ya_nbody::rendering::ui::*;
 
 #[macroquad::main("Yet Another N-Body Simulation")]
 async fn main() -> Result<(), String> {
-    let integrator = Verlet::default();
-
-    let galaxy1 = Galaxy::new(15_000, Vec2::ONE * 200.0, 5e5, Vec2::new(0.0, -0.0), 150.0);
-    let galaxy2 = Galaxy::new(5_000, Vec2::ONE * -200.0,5e4, Vec2::new(20.0, 0.0), 50.0);
-    
-    let mut bodies = galaxy1.get_bodies();
-    bodies.append(&mut galaxy2.get_bodies());
-
-    let mut bh: BarnesHut = BarnesHut::new(1.0, Vec2::ZERO, 20000.0, 20);
+    let thread_count = std::thread::available_parallelism().expect("Couldn't get a thread count!");
+    let mut bh: BarnesHut = BarnesHut::new(1.0, Vec2::ZERO, 20000.0, thread_count.get());
     let mut draw_bh = false;
+
+    let integrator = Verlet::default();
 
     let mut screen_state = ScreenState::new(1.0);
 
     let mut paused = false;
-    let mut dt = 0.025;
     let mut time_passed = 0.0;
 
     let mut ke_points: Vec<f64> = vec![];
 
-    loop {
-        screen_state.handle_panning(-200.0);
-        screen_state.handle_zoom(0.1);
+    let args: Vec<String> = env::args().collect();
+    let file_path = &args.get(1).expect("No config file found!");
 
+    let mut config = Config::from_toml(file_path);
+    let mut bodies = config.bodies();
+
+    loop {
         if !paused {
-            for _ in 0..4 {
+            for _ in 0..config.iterations {
                 bh.apply_gravity(&mut bodies);
-                integrator.integrate_bodies(&mut bodies, dt / 4.0);
+                integrator.integrate_bodies(&mut bodies, config.dt / (config.iterations as f64));
             }
             
-            let mut total_energy = 0.0;
-            for body in bodies.iter() {
-                total_energy += body.get_kinetic_energy();
-            }
+            let total_energy: f32 = bodies.iter().map(|b| b.kinetic_energy()).sum();
             ke_points.push(total_energy as f64);
 
-            time_passed += dt;
+            time_passed += config.dt;
         }
 
         if draw_bh {
@@ -56,20 +48,27 @@ async fn main() -> Result<(), String> {
 
         draw::draw_bodies(&mut bodies, &screen_state);
  
-        draw_ui_window(|ui| {
-            draw_sim_section(ui, get_frame_time(), &mut dt, &time_passed, &mut paused);
-            
-            ui.separator();
-            draw_energy_plot(ui, &ke_points, &dt);
+        draw_ui(|ui| {
+            draw_sim_section(ui, &bodies, &config.dt, &time_passed, &mut paused);
+
+            if ui.button("Reload").clicked() {
+                config = Config::from_toml(file_path);
+                bodies = config.bodies();
+                time_passed = 0.0;
+                ke_points.clear();
+            }
 
             ui.separator();
-            draw_bodies_section(ui, &mut bodies);
-
+            draw_energy_plot(ui, &ke_points, &config.dt);
             ui.separator();
-            draw_bh_visualize_toggle(ui, &mut draw_bh);
+            draw_debug_ui(ui, &config.iterations, &mut draw_bh);
         });
 
         egui_macroquad::draw();
-        next_frame().await
+
+        screen_state.handle_panning(-200.0);
+        screen_state.handle_zoom(0.04);
+
+        macroquad::prelude::next_frame().await
     }
 }
