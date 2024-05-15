@@ -1,0 +1,11 @@
+dt = 0.01 # the simulated time per frame
+iterations = 2 # number of repeated iterations of gravity calculations per frame (heavily impacts performance)
+
+[[galaxies]]
+num_bodies = 30_000
+size = 250.0
+center_mass = 3e5
+position_x = 0.1
+position_y = 0.1
+velocity_x = 0.0
+velocity_y = 3.0
