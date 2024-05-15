@@ -1,5 +1,5 @@
-dt = 0.05
-iterations = 4
+dt = 0.05 # the simulated time per frame
+iterations = 4 # number of repeated iterations of gravity calculations per frame (heavily impacts performance)
 
 [[galaxies]]
 num_bodies = 10_000
