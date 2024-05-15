@@ -1,6 +1,6 @@
-use super::screen_state::ScreenState;
+use super::ScreenState;
 
-use crate::physics::body::Body;
+use crate::physics::Body;
 use crate::physics::barnes_hut::BHTreeNode;
 
 use std::f32::consts::PI;
@@ -10,8 +10,8 @@ use macroquad::prelude::{draw_circle, draw_rectangle_lines, draw_line, draw_tria
 
 pub fn draw_bodies(bodies: &Vec<Body>, screen_state: &ScreenState) {
     for (_, body) in bodies.iter().enumerate() {        
-        let color = Color::new(1., 1.,1., 0.1);
-        let radius = body.mass.clamp(0.5, 10.0);
+        let color = Color::new(1., 1.,1., 0.2);
+        let radius = (body.mass / 2.0).clamp(0.5, 10.0);
 
         let position = (body.position * screen_state.zoom) + screen_state.screen_center;
         
@@ -26,16 +26,25 @@ pub fn draw_bh(node: &BHTreeNode, screen_state: &ScreenState) {
 
     if width < 0.75 { return; }
 
-    let mut pos = (node.region_center * screen_state.zoom) - Vec2::new(width / 2.0, width / 2.0);
-    pos += screen_state.screen_center;
+    let pos = screen_state.transform_position(node.region_center) - Vec2::ONE * width / 2.0;
 
     let color = Color::new(1.0, 1.0, 1.0, 0.1);
-    let thickness = (1.5 * screen_state.zoom).clamp(1.5, 10.0);
+    let thickness = (1.5 * screen_state.zoom).clamp(2.0, 10.0);
     draw_rectangle_lines(pos.x, pos.y, width, width, thickness, color);
 
     for child in node.children.iter() {
         draw_bh(child, screen_state);
     }
+}
+
+pub fn draw_body_vectors(body: &Body, screen_state: &ScreenState) {    
+    let position = screen_state.transform_position(body.position);
+
+    let vel_color = Color::new(0.25, 1.0, 0.25, 0.15);
+    draw_vector(position, position + body.velocity, 2.0, vel_color);
+
+    let acc_color = Color::new(1.0, 0.25, 0.25, 0.15);
+    draw_vector(position, position + body.acceleration, 2.0, acc_color);
 }
 
 fn draw_vector(start: Vec2, end: Vec2, thickness: f32, color: Color) {
@@ -55,14 +64,3 @@ fn draw_vector(start: Vec2, end: Vec2, thickness: f32, color: Color) {
         color)
 }
 
-pub fn draw_body_vectors(body: &Body) {
-    todo!("should take in a screen state!");
-    
-    let position = body.position;
-
-    let vel_color = Color::new(0.25, 1.0, 0.25, 0.15);
-    draw_vector(position, position + body.velocity, 2.0, vel_color);
-
-    let acc_color = Color::new(1.0, 0.25, 0.25, 0.15);
-    draw_vector(position, position + body.acceleration, 2.0, acc_color);
-}

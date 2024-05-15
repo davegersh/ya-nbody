@@ -1,0 +1,20 @@
+dt = 0.025
+iterations = 1
+
+[[galaxies]]
+num_bodies = 10_000
+size = 100.0
+center.mass = 1e6
+center.x = -100.0
+center.y = 0.0
+center.velocity.x = 0.0
+center.velocity.y = 0.0
+
+[[galaxies]]
+num_bodies = 10_000
+size = 100.0
+center.mass = 1e6
+center.x = 100.0
+center.y = 0.0
+center.velocity.x = 0.0
+center.velocity.y = 0.0

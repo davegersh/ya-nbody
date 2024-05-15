@@ -29,4 +29,8 @@ impl Body {
     pub fn reset_force(&mut self) {
         self.force = Vec2::ZERO;
     }
+
+    pub fn get_kinetic_energy(&self) -> f32 {
+        0.5 * self.mass * self.velocity.length_squared()
+    }
 }

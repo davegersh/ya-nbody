@@ -1,5 +1,6 @@
-use crate::physics::body::Body;
-use super::gravity::calculate_gravity;
+use super::Body;
+use super::calculate_gravity;
+use super::GravitySolver;
 
 use glam::Vec2;
 use crossbeam::thread;
@@ -121,18 +122,20 @@ impl BHTreeNode {
 
 pub struct BarnesHut {
     pub tree_root: BHTreeNode,
-    pub thread_count: i32,
+    pub thread_count: usize,
 }
 
 impl BarnesHut {
-    pub fn new(theta: f32, center: Vec2, width: f32, thread_count: i32) -> BarnesHut {
+    pub fn new(theta: f32, center: Vec2, width: f32, thread_count: usize) -> BarnesHut {
         Self {
             tree_root: BHTreeNode::new(theta, center, width),
             thread_count,
         }
     }
+}
 
-    pub fn apply_gravity(&mut self, bodies: &mut Vec<Body>) {
+impl GravitySolver for BarnesHut {
+    fn apply_gravity(&mut self, bodies: &mut Vec<Body>) {
         self.tree_root.reset();
 
         for body in bodies.iter() {
@@ -141,7 +144,7 @@ impl BarnesHut {
 
         let body_count = bodies.len();
         
-        let mut chunk_size: usize = body_count / self.thread_count as usize;
+        let mut chunk_size: usize = body_count / self.thread_count;
 
         if chunk_size == 0 {
             chunk_size = 1;

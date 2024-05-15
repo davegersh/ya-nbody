@@ -1,11 +1,11 @@
-use crate::physics::body::Body;
-use super::gravity::calculate_body_gravity;
+use crate::physics::Body;
+use super::{calculate_body_gravity, GravitySolver};
 
 #[derive(Default)]
-pub struct Naive {}
+pub struct Naive;
 
-impl Naive {
-    fn apply_gravity(&self, bodies: &mut Vec<Body>) {
+impl GravitySolver for Naive {
+    fn apply_gravity(&mut self, bodies: &mut Vec<Body>) {
         let n = bodies.len();
         
         for i in 0..n {

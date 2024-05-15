@@ -41,4 +41,8 @@ impl ScreenState {
     
         return true;
     }
+
+    pub fn transform_position(&self, position: Vec2) -> Vec2 {
+        position * self.zoom + self.screen_center
+    }
 }
