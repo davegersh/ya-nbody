@@ -2,6 +2,8 @@
 
 pkgs.mkShell rec {
     nativeBuildInputs = with pkgs; [
+        cargo # rust build tool
+        rustc # rust compiler
         alsa-lib    # audio library
     ];
 
